@@ -431,3 +431,10 @@ FodyWeavers.xsd
 ## Local env
 .env
 .env.local
+
+## Local env files for specific environments
+**/appsettings.local.json
+
+# Graphify
+graphify-out/
+graphify-run/
