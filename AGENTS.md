@@ -26,7 +26,7 @@ Minimal webhook inbox/debugger for developers (.NET 8 pet project): create endpo
 ## Docs of record (read before making changes)
 1. `docs/agent/project-brief.md`
 2. `docs/agent/project-overview.md`
-3. `docs/agent/architecture-&-stack.md` — note the `&` in the filename
+3. `docs/agent/architecture-stack.md`
 4. `docs/tasks/phase-plan-tasks.md`
 
 If docs conflict with this file, prefer `docs/`.

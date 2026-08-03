@@ -432,6 +432,9 @@ FodyWeavers.xsd
 .env
 .env.local
 
+## Azure Functions local settings (may contain secrets)
+local.settings.json
+
 ## Local env files for specific environments
 **/appsettings.local.json
 

@@ -10,7 +10,7 @@ Minimalist webhook inbox & debugger for developers.
 - Docker-first local development
 
 ## Status
-- [ ] Phase 1: Solution bootstrap & local sandbox
+- [x] Phase 1: Solution bootstrap & local sandbox
 - [ ] Phase 2: Endpoint management
 - [ ] Phase 3: Webhook ingestion
 - [ ] Phase 4: Event inspection UI
