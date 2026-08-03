@@ -1,109 +1,47 @@
-# AGENT.md — Webhook Inbox
+# AGENTS.md — Webhook Inbox
 
 ## Purpose
+Minimal webhook inbox/debugger for developers (.NET 8 pet project): create endpoints, receive webhooks at `/in/{token}`, inspect payloads, replay events, deactivate/expire endpoints. Production-minded but MVP-only.
 
-This repository contains **Webhook Inbox**, a .NET 8 pet project for developers.
+## Repo state
+- Pre-bootstrap: `src/`, `tests/`, `infra/docker`, `infra/bicep`, `infra/scripts`, `.github/workflows` are empty. No `.sln`/`.csproj` files exist yet. Next step is Phase 1 (see `docs/tasks/phase-plan-tasks.md`).
+- Git history uses conventional commits (`chore(repo):`, `docs(agent):`).
 
-The goal is to build a minimal webhook debugger and inbox:
-- create endpoints,
-- receive webhooks,
-- inspect payloads,
-- replay events,
-- manage endpoint deactivation and expiration.
+## Communication
+- Owner writes prompts in Russian. Respond in English. All prompts, plans, commit messages, code comments, and docs must be in English.
 
-The project should look like a small, production-minded cloud-native .NET product.
+## Stack & hard constraints
+- .NET 8, ASP.NET Core MVC only — **no Blazor, Angular, or React**.
+- Azure Functions (isolated worker) for public ingestion; Azure Table Storage for persistence; Azurite (Docker) locally.
+- Docker-first local dev; Azure deployment is Phase 2+.
+- Thin MVC controllers and thin Functions; business logic lives in application services.
+- No microservices, no over-engineering, plain Table Storage (no EF/migrations), MVP only: no billing, auth, Cosmos DB, Kubernetes.
 
-## Communication rules
+## Planned layout (project names are fixed)
+- `WebhookInbox.sln` at repo root; projects under `src/` and `tests/`:
+  - `src/WebhookInbox.Mvc`, `WebhookInbox.Functions`, `WebhookInbox.Contracts`, `WebhookInbox.Domain`, `WebhookInbox.Application`, `WebhookInbox.Infrastructure`
+  - `tests/WebhookInbox.UnitTests`, `WebhookInbox.IntegrationTests`
+- Storage design: Endpoints (PK=workspaceId, RK=endpointId), Events (PK=endpointId, RK=reverseTicks_eventId for newest-first reads), optional EndpointLookup.
 
-- All prompts, implementation plans, commit messages, code comments, and documentation must be written in **English**.
-- Keep answers direct and implementation-focused.
-
-## Working rules
-
-- Work phase by phase, do not jump ahead without confirmation.
-- Keep the architecture MVC-first.
-- Use Docker-first local development.
-- Treat Azure deployment as Phase 2+.
-- Prefer small, focused changes that can be reviewed and committed cleanly.
-- Do **not** use Blazor.
-- Do **not** use Angular or React.
-- Do **not** introduce unnecessary microservices or abstractions.
-
-## Required stack
-
-- .NET 8
-- ASP.NET Core MVC for UI
-- Azure Functions (isolated worker) for public webhook ingestion
-- Azure Table Storage for persistence
-- Azurite for local storage emulation
-- Docker Compose for local development
-
-## Main docs to read first
-
-Read these files before making changes:
-
+## Docs of record (read before making changes)
 1. `docs/agent/project-brief.md`
 2. `docs/agent/project-overview.md`
-3. `docs/agent/architecture-stack.md`
+3. `docs/agent/architecture-&-stack.md` — note the `&` in the filename
 4. `docs/tasks/phase-plan-tasks.md`
 
-If the content of the docs conflicts with this AGENT file, prefer the docs in `docs/`.
+If docs conflict with this file, prefer `docs/`.
 
-## Execution style
+## Phases (work one at a time; wait for confirmation before advancing)
+1. Bootstrap: solution + 8 projects, references, MVC shell, docker-compose with Azurite.
+2. Endpoints: entity, Table Storage repos, create/list/details/deactivate/expire, MVC views.
+3. Ingestion: `/in/{token}` Function trigger, normalize request, persist events.
+4. Event UI: recent events on endpoint details, event detail page (headers/body/metadata).
+5. Replay & cleanup: replay service, expiration enforcement, cleanup job.
+6. CI/CD & Azure: GitHub Actions, Bicep, deploy docs in README.
 
-- Work one phase at a time.
-- Start with repository bootstrap and solution layout.
-- Then implement endpoint management.
-- Then webhook ingestion.
-- Then event inspection UI.
-- Then replay and cleanup.
-- Finally add CI/CD and Azure deployment.
-
-Implementation guidelines:
-- Keep MVC controllers thin.
-- Move business logic into application services.
-- Keep Azure Functions thin and focused only on request ingestion and forwarding.
-- Prefer clear names and straightforward code over clever abstractions.
-- Write tests for core domain and storage-backed flows.
-
-## Phase reminders
-
-### Phase 1 — Bootstrap
-- Create the solution and projects.
-- Wire project references.
-- Add MVC shell (`HomeController`, `Home/Index`).
-- Add Docker Compose with Azurite.
-- Ensure local environment can start easily.
-
-### Phase 2 — Endpoints
-- Implement endpoint entity and Table Storage persistence.
-- Implement create/list/details/deactivate/expire flows.
-- Add MVC views for endpoint management.
-
-### Phase 3 — Ingestion
-- Implement Azure Function HTTP trigger for `/in/{token}`.
-- Normalize requests and persist events.
-- Add integration tests for ingest flow.
-
-### Phase 4 — Event UI
-- Extend endpoint details page with event list.
-- Implement event details view (headers, body, metadata).
-
-### Phase 5 — Replay & Cleanup
-- Implement replay service and UI.
-- Enforce expiration.
-- Add cleanup path for old events/expired endpoints.
-
-### Phase 6 — CI/CD & Azure
-- Add GitHub Actions workflows.
-- Add Azure deployment scripts (Bicep/infra).
-- Update README with deploy instructions.
+## Commands
+- Local dev: `docker compose -f infra/docker/docker-compose.yml up -d` (compose file not created yet).
+- Build/test: `dotnet build WebhookInbox.sln`, `dotnet test WebhookInbox.sln` (once Phase 1 exists).
 
 ## Output expectations
-
-For every task or phase, provide:
-- a short English commit message suggestion,
-- a concise implementation plan,
-- the files changed,
-- what is implemented vs stubbed,
-- how to run and verify locally.
+For each task/phase deliver: a short conventional-commit message, an implementation plan, files changed, what is implemented vs stubbed, and how to run and verify locally.
