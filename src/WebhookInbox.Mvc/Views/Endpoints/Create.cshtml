@@ -1,0 +1,27 @@
+@model CreateEndpointForm
+@{
+    ViewData["Title"] = "Create endpoint";
+}
+
+<h1>Create endpoint</h1>
+
+<form method="post" asp-action="Create" class="create-form">
+    <div asp-validation-summary="ModelOnly" class="validation-summary-errors"></div>
+
+    <div class="form-field">
+        <label asp-for="Name"></label>
+        <input asp-for="Name" placeholder="e.g. Stripe production" />
+        <span asp-validation-for="Name" class="field-validation-error"></span>
+    </div>
+
+    <div class="form-field">
+        <label asp-for="ExpiresInDays"></label>
+        <input asp-for="ExpiresInDays" placeholder="Leave empty for no expiration" />
+        <span asp-validation-for="ExpiresInDays" class="field-validation-error"></span>
+    </div>
+
+    <div class="actions">
+        <button type="submit" class="btn btn-primary">Create</button>
+        <a class="btn btn-secondary" asp-action="Index">Cancel</a>
+    </div>
+</form>

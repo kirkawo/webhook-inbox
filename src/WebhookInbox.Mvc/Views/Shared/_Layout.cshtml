@@ -3,14 +3,23 @@
 <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Webhook Inbox</title>
+    <title>@(ViewData["Title"] is null ? "Webhook Inbox" : $"{ViewData["Title"]} · Webhook Inbox")</title>
+    <link rel="stylesheet" href="~/css/site.css" />
 </head>
 <body>
-    <header>
-        <h1>Webhook Inbox</h1>
-    </header>
-    <main>
+    <nav class="primary-nav">
+        <div class="container nav-row">
+            <a class="brand" asp-controller="Home" asp-action="Index">Webhook Inbox</a>
+            <div class="nav-links">
+                <a class="nav-link" asp-controller="Endpoints" asp-action="Index">Endpoints</a>
+            </div>
+        </div>
+    </nav>
+    <main class="container">
         @RenderBody()
     </main>
+    <footer class="footer-section">
+        <div class="container">© 2026 Webhook Inbox · local webhook debugger</div>
+    </footer>
 </body>
 </html>

@@ -3,6 +3,7 @@
   <ItemGroup>
     <ProjectReference Include="..\WebhookInbox.Application\WebhookInbox.Application.csproj" />
     <ProjectReference Include="..\WebhookInbox.Contracts\WebhookInbox.Contracts.csproj" />
+    <ProjectReference Include="..\WebhookInbox.Infrastructure\WebhookInbox.Infrastructure.csproj" />
   </ItemGroup>
 
   <PropertyGroup>

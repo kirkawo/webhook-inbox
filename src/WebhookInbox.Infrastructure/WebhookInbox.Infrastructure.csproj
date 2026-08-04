@@ -1,6 +1,11 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <ItemGroup>
+    <PackageReference Include="Azure.Data.Tables" Version="12.11.0" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\WebhookInbox.Application\WebhookInbox.Application.csproj" />
     <ProjectReference Include="..\WebhookInbox.Domain\WebhookInbox.Domain.csproj" />
     <ProjectReference Include="..\WebhookInbox.Contracts\WebhookInbox.Contracts.csproj" />
   </ItemGroup>

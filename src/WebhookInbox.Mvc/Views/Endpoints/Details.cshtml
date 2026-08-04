@@ -1,0 +1,48 @@
+@model EndpointViewModel
+@{
+    ViewData["Title"] = Model.Name;
+}
+
+<div class="page-head">
+    <h1>@Model.Name</h1>
+    <a class="btn btn-secondary" asp-action="Index">Back to list</a>
+</div>
+
+@if (Model.IsActive)
+{
+    <div class="actions">
+        <form method="post" asp-action="Deactivate" asp-route-id="@Model.EndpointId">
+            <button type="submit" class="btn btn-danger">Deactivate</button>
+        </form>
+        <form method="post" asp-action="Expire" asp-route-id="@Model.EndpointId">
+            <button type="submit" class="btn btn-secondary">Expire now</button>
+        </form>
+    </div>
+}
+
+<dl class="def-grid">
+    <div class="def-row">
+        <dt>Status</dt>
+        <dd><span class="badge badge-@Model.StatusClass">@Model.StatusText</span></dd>
+    </div>
+    <div class="def-row">
+        <dt>Webhook URL</dt>
+        <dd>@Model.WebhookUrl</dd>
+    </div>
+    <div class="def-row">
+        <dt>Path token</dt>
+        <dd>@Model.PathToken</dd>
+    </div>
+    <div class="def-row">
+        <dt>Created</dt>
+        <dd>@Model.CreatedAtUtc.ToString("yyyy-MM-dd HH:mm:ss 'UTC'")</dd>
+    </div>
+    <div class="def-row">
+        <dt>Expires</dt>
+        <dd>@(Model.ExpiresAtUtc?.ToString("yyyy-MM-dd HH:mm:ss 'UTC'") ?? "Never")</dd>
+    </div>
+    <div class="def-row">
+        <dt>Endpoint ID</dt>
+        <dd>@Model.EndpointId</dd>
+    </div>
+</dl>

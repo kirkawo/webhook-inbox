@@ -1,0 +1,38 @@
+@model IReadOnlyList<EndpointViewModel>
+@{
+    ViewData["Title"] = "Endpoints";
+}
+
+<div class="page-head">
+    <h1>Endpoints</h1>
+    <a class="btn btn-primary" asp-action="Create">[+] Create endpoint</a>
+</div>
+
+@if (Model.Count == 0)
+{
+    <p class="empty">No endpoints yet. Create one to get a webhook URL.</p>
+}
+else
+{
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Name</th>
+                <th>Path token</th>
+                <th>Status</th>
+                <th>Created</th>
+            </tr>
+        </thead>
+        <tbody>
+        @foreach (var endpoint in Model)
+        {
+            <tr>
+                <td><a asp-action="Details" asp-route-id="@endpoint.EndpointId">@endpoint.Name</a></td>
+                <td>@endpoint.PathToken</td>
+                <td><span class="badge badge-@endpoint.StatusClass">@endpoint.StatusText</span></td>
+                <td class="meta">@endpoint.CreatedAtUtc.ToString("yyyy-MM-dd HH:mm")</td>
+            </tr>
+        }
+        </tbody>
+    </table>
+}
